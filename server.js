@@ -10,7 +10,7 @@ const DB_FILE = path.resolve('./database.json');
 
 const CLIENT_ID = '119dd61812e3d0a0c5c36112de508783';
 const CLIENT_SECRET = 'c801f9ee336ecb58e2ae22ad5214cb123acea74a6bcbea98ea43b93d554778ba';
-const REDIRECT_URI = 'https://friendly-barnacle-r4445jp9gw4ghpwg4-8000.app.github.dev/authenticate.html';
+const REDIRECT_URI = '';
 
 app.use(cors());
 app.use(express.json());
@@ -45,8 +45,7 @@ async function getUserIdFromToken(authHeader) {
 }
 
 app.post('/api/auth', async (req, res) => {
-    const { code, code_verifier } = req.body;
-
+    const { code, code_verifier, redirect_uri } = req.body;
     try {
         const tokenResponse = await fetch('https://auth.hackclub.com/oauth/token', {
             method: 'POST',
@@ -56,7 +55,7 @@ app.post('/api/auth', async (req, res) => {
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
                 code: code,
-                redirect_uri: REDIRECT_URI,
+                redirect_uri: redirect_uri,
                 code_verifier: code_verifier
             })
         });
