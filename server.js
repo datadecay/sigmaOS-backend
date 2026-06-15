@@ -80,12 +80,12 @@ app.post('/api/auth', async (req, res) => {
 
         const db = await readDatabase();
         
-        if (!db[userData.slack_id]) {
-            db[userData.slack_id] = { data: {} };
+        if (!db[userData.identity?.id]) {
+            db[userData.identity?.id] = { data: {} };
         }
         
-        db[userData.slack_id].tier = assignedTier;
-        db[userData.slack_id].storageLimitMB = storageLimitMB;
+        db[userData.identity?.id].tier = assignedTier;
+        db[userData.identity?.id].storageLimitMB = storageLimitMB;
         
         await writeDatabase(db);
 
@@ -93,7 +93,7 @@ app.post('/api/auth', async (req, res) => {
             success: true,
             token: tokenData.access_token,
             user: userData,
-            data: db[userData.slack_id].data
+            data: db[userData.identity.id].data
         });
 
     } catch (err) {
